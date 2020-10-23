@@ -25,8 +25,15 @@ Price:1000}
     getProducts(){
         return this.products;
     }
+
     addProduct(prd) {
         this.products.push(prd);
+        return this.products;
+    }
+
+    removeProduct(prdItemIndex){
+        debugger;
+        delete this.products[prdItemIndex];
         return this.products;
     }
 }

@@ -3,6 +3,7 @@ import {Catergories, Manufacturers} from './../../models/constants';
 import {Logic} from '././../../models/logic';
 import DropDownComponent from './../reusablecomponent/dropdowncomponent';
 class ProductFormComponent extends Component {
+
     constructor(props) {
         super(props);
         this.state = {  
@@ -35,7 +36,6 @@ class ProductFormComponent extends Component {
         if(name === "ProductId") {
             let prds = this.logic.getProducts();
             
-            let isproductidexits = false;
             let index = prds.findIndex(prditem => prditem.ProductId == value);
             if(index > 0)
             {
@@ -80,7 +80,7 @@ class ProductFormComponent extends Component {
                }
            }
        }
-       debugger;
+
        if(name === "CategoryName")
        {
            if(value === "Select Data")
@@ -94,6 +94,21 @@ class ProductFormComponent extends Component {
             this.setState({IsFormValid:true}); 
            }
        }
+
+       if(name === "Manufacturer")
+       {
+           if(value === "Select Data")
+           {
+            this.setState({IsManufacturerValid:false});
+            this.setState({IsFormValid:false}); 
+           }
+           else
+           {
+            this.setState({IsManufacturerValid:true});
+            this.setState({IsFormValid:true}); 
+           }
+       }
+
    }
 
     // the lifecycle method of component that will be executed 
@@ -130,7 +145,7 @@ class ProductFormComponent extends Component {
         this.setState({ProductName:''});
         this.setState({CategoryName:''});
         this.setState({Manufacturer:''});
-        this.setState({BasePrice:0});
+        this.setState({Price:0});
     }
     getSelectedCategory=(val)=> {
         this.setState({CategoryName: val}, ()=>{});
@@ -155,6 +170,14 @@ class ProductFormComponent extends Component {
             console.log(JSON.stringify(this.state.products)); 
        });
     }
+
+    handleDelete=(productIdx)=>{
+        this.logic.removeProduct(productIdx);
+        let prds = this.logic.getProducts();
+        this.setState({products:prds}, ()=>{
+            console.log(JSON.stringify(this.state.products)); });
+    }
+    
     render() { 
         return (
             <div className="container">
@@ -195,6 +218,11 @@ class ProductFormComponent extends Component {
                           ))
                       }
                     </select>*/}
+                    <div className="alert alert-danger"
+                      hidden={this.state.IsCategoryNameValid}>
+                        Category name is not selected
+                      </div>   
+
                 </div>
                 <div className="form-group">
                     <label>Manufacturer Name</label>
@@ -211,6 +239,11 @@ class ProductFormComponent extends Component {
                         ))
                     }
                 </select> */}
+                    <div className="alert alert-danger"
+                      hidden={this.state.IsManufacturerValid}>
+                        Manufacturer is not selected
+                      </div>   
+
                 </div>
                 <div className="form-group">
                     <label>Base Price</label>
@@ -251,9 +284,13 @@ class ProductFormComponent extends Component {
                                   <td key={i}>{prd[col]}</td>
                               ))
                           } 
+                          <td>
+                            <input type="Button" value = "Delete"
+                                    onClick = {() => this.handleDelete(idx)}/>
+                          </td>
                        </tr> 
                     ))
-                }
+                    }
                    </tbody>
               </table>
              {/* <table className="table table-bordered table-striped table-dark">
