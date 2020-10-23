@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import Productfromcomponent from './components/productformcomponent/productformcomponent'
+import './../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Productfromcomponent></Productfromcomponent>
   </React.StrictMode>,
   document.getElementById('root')
 );
